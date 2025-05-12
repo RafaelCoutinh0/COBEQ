@@ -1,0 +1,48 @@
+
+========== COMPARAÇÃO DE RESULTADOS ==========
+Função Objetivo     : Padrão = -716154.67 | RNA_1 = -741585.53 | RNA_2 = -741585.53
+Receita (Venda)     : Padrão = 717841.41 | RNA_1 = 743391.85 | RNA_2 = 743391.85
+Energia Total       : Padrão = 1686.74 | RNA_1 = 1806.32 | RNA_2 = 1806.32
+Energia Booster     : Padrão = 802.66 | RNA_1 = 788.67 | RNA_2 = 788.67
+Energia BCS1        : Padrão = 262.73 | RNA_1 = 293.16 | RNA_2 = 293.16
+Energia BCS2        : Padrão = 262.73 | RNA_1 = 289.72 | RNA_2 = 289.72
+Energia BCS3        : Padrão = 262.73 | RNA_1 = 288.75 | RNA_2 = 288.75
+Energia BCS4        : Padrão = 262.73 | RNA_1 = 324.66 | RNA_2 = 324.66
+
+========== COMPARAÇÃO DAS VARIÁVEIS RELEVANTES ==========
+q_tr      : Padrão = 239.28 | RNA_1 = 247.80 | RNA_2 = 247.80
+q_main1   : Padrão = 59.82 | RNA_1 = 59.85 | RNA_2 = 59.85
+q_main2   : Padrão = 59.82 | RNA_1 = 59.82 | RNA_2 = 59.82
+q_main3   : Padrão = 59.82 | RNA_1 = 59.81 | RNA_2 = 59.81
+q_main4   : Padrão = 59.82 | RNA_1 = 64.12 | RNA_2 = 64.12
+dP_bcs1   : Padrão = 158.11 | RNA_1 = 176.34 | RNA_2 = 176.34
+dP_bcs2   : Padrão = 158.11 | RNA_1 = 174.34 | RNA_2 = 174.34
+dP_bcs3   : Padrão = 158.11 | RNA_1 = 173.81 | RNA_2 = 173.81
+dP_bcs4   : Padrão = 158.11 | RNA_1 = 182.30 | RNA_2 = 182.30
+P_fbhp1   : Padrão = 74.14 | RNA_1 = 74.14 | RNA_2 = 74.14
+P_fbhp2   : Padrão = 74.14 | RNA_1 = 74.14 | RNA_2 = 74.14
+P_fbhp3   : Padrão = 74.14 | RNA_1 = 74.14 | RNA_2 = 74.14
+P_fbhp4   : Padrão = 74.14 | RNA_1 = 74.14 | RNA_2 = 74.14
+p_man     : Padrão = 89.05 | RNA_1 = 96.68 | RNA_2 = 96.68
+
+========== VARIÁVEIS MANIPULADAS (u) ==========
+f_BP (Hz)        : Padrão = 53.41 | RNA_1 = 52.03 | RNA_2 = 52.03
+p_topside (bar)  : Padrão = 0.80 | RNA_1 = 0.80 | RNA_2 = 0.80
+f_BCS_1 (Hz)     : Padrão = 60.35 | RNA_1 = 63.29 | RNA_2 = 63.29
+alpha_1 (-)      : Padrão = 1.00 | RNA_1 = 1.00 | RNA_2 = 1.00
+f_BCS_2 (Hz)     : Padrão = 60.35 | RNA_1 = 63.39 | RNA_2 = 63.39
+alpha_2 (-)      : Padrão = 1.00 | RNA_1 = 1.00 | RNA_2 = 1.00
+f_BCS_3 (Hz)     : Padrão = 60.35 | RNA_1 = 62.61 | RNA_2 = 62.61
+alpha_3 (-)      : Padrão = 1.00 | RNA_1 = 0.98 | RNA_2 = 0.98
+f_BCS_4 (Hz)     : Padrão = 60.35 | RNA_1 = 65.00 | RNA_2 = 65.00
+alpha_4 (-)      : Padrão = 1.00 | RNA_1 = 1.00 | RNA_2 = 1.00
+
+========== COMPARAÇÃO DE TEMPOS (IPOPT) ==========
+Tempo solver modelo padrão  : 0.0120 s
+Tempo solver modelo RNA_1   : 0.0130 s
+Tempo solver modelo RNA_2   : 0.0120 s
+
+========== ESTATÍSTICAS DE TEMPO (IPOPT) ==========
+CASO A    -> Média: 0.0110 s | Desvio padrão: 0.0026 s
+CASO C    -> Média: 0.0105 s | Desvio padrão: 0.0028 s
+CASO B    -> Média: 0.0078 s | Desvio padrão: 0.0027 s
