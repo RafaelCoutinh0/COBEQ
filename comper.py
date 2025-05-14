@@ -139,29 +139,32 @@ with open(output_file, "w", encoding="utf-8") as f:
 
         log("\n========== ESTATÍSTICAS DE TEMPO (IPOPT) ==========")
         log(f"CASO A    -> Média: {media_padrao:.4f} s | Desvio padrão: {desvio_padrao:.4f} s")
-        log(f"CASO C    -> Média: {media_rna:.4f} s | Desvio padrão: {desvio_rna:.4f} s")
         log(f"CASO B    -> Média: {media_rna2:.4f} s | Desvio padrão: {desvio_rna2:.4f} s")
+        log(f"CASO C    -> Média: {media_rna:.4f} s | Desvio padrão: {desvio_rna:.4f} s")
+
         print("\n========== ESTATÍSTICAS DE TEMPO (IPOPT) ==========")
         print(f"CASO A  -> Média: {media_padrao:.4f} s | Desvio padrão: {desvio_padrao:.4f} s")
-        print(f"CASO C   -> Média: {media_rna:.4f} s | Desvio padrão: {desvio_rna:.4f} s")
-        print(f"CASO B   -> Média: {media_rna2:.4f} s | Desvio padrão: {desvio_rna2:.4f} s")
+        print(f"CASO B   -> Média: {media_rna2:.4f} s | Desvio padrão: {desvio_rna:.4f} s")
+        print(f"CASO C   -> Média: {media_rna:.4f} s | Desvio padrão: {desvio_rna2:.4f} s")
+        log(f"Caso A: {tempos_padrao}")
+        log(f"Caso B: {tempos_rna2}")
+        log(f"Caso C: {tempos_rna}")
 
         # Plot
         import matplotlib.pyplot as plt
         plt.figure(figsize=(10, 6))
-        plt.hist(tempos_padrao, bins=20, alpha=0.7, label="CASO A", edgecolor='black')
-        plt.hist(tempos_rna2, bins=20, alpha=0.7, label="CASO B", edgecolor='black')
-        plt.hist(tempos_rna, bins=20, alpha=0.7, label="CASO C", edgecolor='black')
+        plt.hist(tempos_padrao, bins=20, alpha=0.7, label="Caso A", edgecolor='black')
+        plt.hist(tempos_rna2, bins=20, alpha=0.7, label="Caso B", edgecolor='black')
+        plt.hist(tempos_rna, bins=20, alpha=0.7, label="Caso C", edgecolor='black')
         plt.xlabel("Tempo do Solver IPOPT (s)",fontsize=20)
         plt.ylabel("Frequência",fontsize=20)
-        plt.xticks(fontsize=15)
-        plt.yticks(fontsize=15)
+        plt.xticks(fontsize=20)
+        plt.yticks(fontsize=20)
         plt.legend(fontsize=20)
-        plt.grid(True)
         plt.tight_layout()
         plt.savefig("comparacao_tempos_solver.png")  # <-- SALVA o plot
         plt.close()
         plt.show()
 
     # Executar benchmark com 100 execuções (ou o valor que quiser)
-    benchmark_otimizacoes_solver(n=1000)
+    benchmark_otimizacoes_solver(n=10000)
