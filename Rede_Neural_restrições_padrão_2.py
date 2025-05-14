@@ -2,6 +2,7 @@ import casadi as ca
 import numpy as np
 from casadi import vertcat
 from pontos_iniciais import u0_rna
+from violation_verified import violantion
 
 
 def normalize(value, min_val, max_val):
@@ -121,7 +122,7 @@ num_ineq = g_inequality.shape[0]  # Número de desigualdades
 nlp = {'x': vertcat( x, u), 'f': objective, 'g': g_constraints}
 
 solver = ca.nlpsol('solver', 'ipopt', nlp)
-
+solver_caso_b = solver
 # Valores iniciais e limites para u
 u0 = u0_rna
 u0_norm = normalize(u0, label_min, label_max)
@@ -144,6 +145,11 @@ ubx = output_max.tolist() + u_max.tolist()
 lbg = [0.0] * num_eq + [0.0] * num_ineq  # Igualdades: 0 ≤ g ≤ 0 | Desigualdades: 0 ≤ g ≤ ∞
 ubg = [0.0] * num_eq + [np.inf] * num_ineq
 # Resolver o problema
+x0_caso_b = x0_total
+lbx_caso_b = lbx
+ubx_caso_b = ubx
+lbg_caso_b = lbg
+ubg_caso_b = ubg
 sol = solver(x0=x0_total, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)
 solver_stats = solver.stats()
 tempo_ipopt = solver_stats['t_proc_total']
@@ -161,6 +167,9 @@ optimal_output_global = optimal_u_np[:-10]
 # Separa x e u da solução ótima
 x_opt = optimal_u_np[:14]
 optimal_u = optimal_u_np[14:]
+u_teste = [optimal_u[9], 8e4,optimal_u[5],optimal_u[1],optimal_u[6],optimal_u[2],optimal_u[7],optimal_u[3],optimal_u[8],optimal_u[4]]
+verified = violantion(u_teste)
+print(f"violação : {verified}")
 
 # Define função com entrada [x, u]
 g_func = ca.Function('g_func', [x, u], [g_constraints])
@@ -190,7 +199,7 @@ saidas = ['q_main1', 'q_main2', 'q_main3', 'q_main4', 'q_tr', 'P_man',
 # print("===== Resultado da Otimização =====")
 # print(f"f_BP: {float(optimal_u[9]):.2f} Hz")  # Converte para float
 # print(f"p_topside: {float(optimal_u[0]) / 1e5:.2f} bar")  # Converte antes da divisão
-
+#
 # for i in range(1, 5):
 #     print(f"f_ESP{i}: {float(optimal_u[i + 4]):.2f} Hz | alpha{i}: {float(optimal_u[i]):.2f}")
 #

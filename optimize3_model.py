@@ -67,6 +67,7 @@ ubg = [0.0] * num_eq + [np.inf] * num_ineq
 # Configuração do problema de otimização
 nlp = {'x': vertcat(x, z, u), 'f': objective, 'g': g_constraints}
 solver = nlpsol('solver', 'ipopt', nlp)
+solver_caso_a  = solver
 u_ptopo = 0.8e5
 # Valores iniciais para as variáveis manipuláveis (u), estados (x) e algébricas (z)
 u0 = u0_ref
@@ -92,7 +93,11 @@ x0_full = np.concatenate((x0, z0, u0))
 # Definir limites das variáveis
 lbx = [0] +[0]+ [0] * 12 + [0] * 8 + [35, u_ptopo, 35, 0, 35, 0, 35, 0, 35, 0] #Inferiores
 ubx = [np.inf] * 14 + [np.inf] * 8 + [65, u_ptopo, 65, 1, 65, 1, 65,1, 65, 1]  # Superiores
-
+x0_caso_a = x0_full
+lbx_caso_a = lbx
+ubx_caso_a = ubx
+lbg_caso_a = lbg
+ubg_caso_a = ubg
 # Resolver o problema de otimização
 sol = solver(x0=x0_full, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)
 solver_stats = solver.stats()
@@ -144,16 +149,6 @@ CYAN = '\033[36m'
 GREEN = '\033[32m'
 YELLOW = '\033[33m'
 
-# print(f"\n{CYAN}{BOLD}{'='*50}{RESET}\n{CYAN}{BOLD}Variáveis Controladas{RESET}")
-# for i, name in enumerate(state_names):
-#     print(f"{name}: Otimizado = {float(x_opt[i]):.4f}, fsolve = {float(x_ss[i]):.4f}")
-# for i, name in enumerate(algebraic_names):
-#     print(f"{name}: Otimizado = {float(z_opt[i]):.4f}, fsolve = {float(z_ss[i]):.4f}")
-# print(f"{CYAN}{BOLD}{'='*50}{RESET}\n{CYAN}{BOLD}Variáveis Manipuladas{RESET}")
-# for i, name in enumerate(control_names):
-#     print(f"{name}: {float(u_opt[i]):.4f}")
-# print(f"{CYAN}{BOLD}{'='*50}{RESET}")
-# # Cálculos de energia
 energybooster = (9653.04 * (x_ss[1]/3600) * (1.0963e3 * (u_opt[0]/50) ** 2) * 0.001)
 energybcs1 = (x_ss[4]/3600) * (z_ss[1]*1e2)
 energybcs2 = (x_ss[7]/3600) * (z_ss[3]*1e2)
@@ -167,15 +162,7 @@ objective =  -(3000 * x_ss[1]) + ((9653.04 * (x_ss[1]/3600) * (1.0963e3 * (u_opt
         ((x_ss[7]/3600) * z_ss[3] * 1e2) + \
         ((x_ss[10]/3600) * z_ss[5] * 1e2)  + \
         ((x_ss[13]/3600) * z_ss[7] * 1e2)) * 0.91
-#
-# print(f"{GREEN}{BOLD}{'='*50}{RESET}\n{GREEN}{BOLD}VALORES DA FUNÇÃO OBJETIVO:{RESET}")
-# print(f"\n{YELLOW}{BOLD}Valor da venda do petróleo{RESET}: R${venda:.2f}")
-# print(f"{YELLOW}{BOLD}Preço da energia total{RESET}: R${int(energytot[0]):.2f}")
-# print(f"{GREEN}{BOLD}Energia do booster{RESET}: {int(energybooster[0]):.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 1{RESET}: {energybcs1:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 2{RESET}: {energybcs2:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 3{RESET}: {energybcs3:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 4{RESET}: {energybcs4:.2f} Kwh")
+
 def casadi_to_list(mx_vector):
     return [float(x) for x in np.array(mx_vector).flatten()]
 
@@ -192,55 +179,3 @@ solver_padrao = solver
 x0_padrao = x0_full  # já montado
 
 optimize_padrao = [x_ss_relevante,u_opt, objective, venda, energytot[0], energybooster[0], energybcs1, energybcs2, energybcs3, energybcs4,tempo_ipopt]
-
-
-# u_opt = np.array([50.21, 8e4,  64.6684, 0.933119, 65, 0.838376, 63.2911, 1,  65, 1])
-# mani_solver = lambda y: np.array([float(i) for i in mani.model(0, y[:14], y[14:], u_opt)])
-# y_ss = fsolve(mani_solver, np.concatenate((x0, z0)))
-#
-# # Separar resultados do fsolve
-# x_ss = y_ss[:14]
-# z_ss = y_ss[14:]
-#
-# objective_rna =  -(3000 * x_ss[1]) + ((9653.04 * (x_ss[1]/3600) * (1.0963e3 * (u_opt[0]/ 50) ** 2) * 0.001) + \
-#         ((x_ss[4]/3600) * z_ss[1] * 1e2) + \
-#         ((x_ss[7]/3600) * z_ss[3] * 1e2) + \
-#         ((x_ss[10]/3600) * z_ss[5] * 1e2)  + \
-#         ((x_ss[13]/3600) * z_ss[7] * 1e2)) * 0.91
-
-# print(f"valor da função objetivo: {float(objective):.2f}")
-#
-# print(f"\n{CYAN}{BOLD}{'='*50}{RESET}\n{CYAN}{BOLD}Variáveis Controladas{RESET}")
-# for i, name in enumerate(state_names):
-#     print(f"{name}: Otimizado = {float(x_opt[i]):.4f}, fsolve = {float(x_ss[i]):.4f}")
-# for i, name in enumerate(algebraic_names):
-#     print(f"{name}: Otimizado = {float(z_opt[i]):.4f}, fsolve = {float(z_ss[i]):.4f}")
-# print(f"{CYAN}{BOLD}{'='*50}{RESET}\n{CYAN}{BOLD}Variáveis Manipuladas{RESET}")
-# for i, name in enumerate(control_names):
-#     print(f"{name}: {float(u_opt[i]):.4f}")
-# print(f"{CYAN}{BOLD}{'='*50}{RESET}")
-
-# Cálculos de energia
-# energybooster = (9653.04 * (x_ss[1]/3600) * (1.0963e3 * (u_opt[0]/50) ** 2) * 0.001)
-# energybcs1 = (x_ss[4]/3600) * (z_ss[1]*1e2)
-# energybcs2 = (x_ss[7]/3600) * (z_ss[3]*1e2)
-# energybcs3 = (x_ss[10]/3600) * (z_ss[5]*1e2)
-# energybcs4 = (x_ss[13]/3600) * (z_ss[7]*1e2)
-# energytot = (energybooster + energybcs1 + energybcs2 + energybcs3 + energybcs4) * 0.91
-# venda = 3000 * x_ss[1]
-#
-# objective =  -(3000 * x_ss[1]) + ((9653.04 * (x_ss[1]/3600) * (1.0963e3 * (u_opt[0]/ 50) ** 2) * 0.001) + \
-#         ((x_ss[4]/3600) * z_ss[1] * 1e2) + \
-#         ((x_ss[7]/3600) * z_ss[3] * 1e2) + \
-#         ((x_ss[10]/3600) * z_ss[5] * 1e2)  + \
-#         ((x_ss[13]/3600) * z_ss[7] * 1e2)) * 0.91
-
-# print(f"{GREEN}{BOLD}{'='*50}{RESET}\n{GREEN}{BOLD}VALORES DA FUNÇÃO OBJETIVO:{RESET}")
-# print(f"\n{YELLOW}{BOLD}Valor da venda do petróleo{RESET}: R${venda:.2f}")
-# print(f"{YELLOW}{BOLD}Preço da energia total{RESET}: R${energytot:.2f}")
-# print(f"{GREEN}{BOLD}Energia do booster{RESET}: {energybooster:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 1{RESET}: {energybcs1:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 2{RESET}: {energybcs2:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 3{RESET}: {energybcs3:.2f} Kwh")
-# print(f"{GREEN}{BOLD}Energia do BCS 4{RESET}: {energybcs4:.2f} Kwh")
-

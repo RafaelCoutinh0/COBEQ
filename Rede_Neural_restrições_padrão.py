@@ -102,6 +102,7 @@ g_constraints = ca.vertcat(*output_constraints, restqmain1,restqmain2,restqmain3
 nlp = {'x': u, 'f': objective, 'g': g_constraints}
 
 solver = ca.nlpsol('solver', 'ipopt', nlp)
+solver_caso_c = solver
 
 # Valores iniciais e limites para u
 u0 = u0_rna
@@ -111,9 +112,14 @@ ubx = feature_max.tolist()
 # Como cada restrição deve ser >= 0, definimos:
 lbg = [0.0] * g_constraints.size1()
 ubg = [np.inf] * g_constraints.size1()
-
+x0_caso_c = u0
+lbx_caso_c = lbx
+ubx_caso_c = ubx
+lbg_caso_c = lbg
+ubg_caso_c = ubg
 # Resolver o problema
 sol = solver(x0=u0, lbx=lbx, ubx=ubx, lbg=lbg, ubg=ubg)
+
 solver_stats = solver.stats()
 tempo_ipopt = solver_stats['t_proc_total']
 
