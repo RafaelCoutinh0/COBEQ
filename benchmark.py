@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import ScalarFormatter
 from optimize3_model import x0_caso_a,lbx_caso_a,ubx_caso_a, lbg_caso_a, ubg_caso_a, solver_caso_a
 from Rede_Neural_restrições_padrão_2 import x0_caso_b,lbx_caso_b,ubx_caso_b,lbg_caso_b, ubg_caso_b, solver_caso_b
 from Rede_Neural_restrições_padrão import x0_caso_c,lbx_caso_c,ubx_caso_c, lbg_caso_c, ubg_caso_c, solver_caso_c
@@ -65,6 +66,12 @@ with open(output_file, "w", encoding="utf-8") as f:
         plt.xticks(fontsize=20)
         plt.yticks(fontsize=20)
         plt.legend(fontsize=20)
+        ax = plt.gca()
+        formatter = ScalarFormatter(useMathText=True)
+        formatter.set_scientific(True)
+        formatter.set_powerlimits((-3, 3))  # ativa notação para valores fora desse intervalo
+        ax.yaxis.set_major_formatter(formatter)
+        ax.yaxis.get_offset_text().set_fontsize(20)
         plt.tight_layout()
         plt.savefig("comparacao_tempos_solver.png")  # <-- SALVA o plot
         plt.close()
