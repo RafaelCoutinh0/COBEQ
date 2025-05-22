@@ -76,7 +76,9 @@ caso_b = [
     7.4158553e+05
 ]
 
-
+print(len(caso_a))
+print(len(caso_b))
+print(len(caso_c))
 import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter
 
